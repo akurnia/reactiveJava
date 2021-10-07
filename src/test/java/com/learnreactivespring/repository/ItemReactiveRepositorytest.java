@@ -21,4 +21,27 @@ import java.util.List;
 public class ItemReactiveRepositorytest {
 
 
+    @Autowired
+    ItemReactiveRepository itemReactiveRepository;
+
+    List<Item> itemList = Arrays.asList(
+            new Item("AK1", "Samsung TV", 400.000),
+            new Item("AK3", "LG TV", 420.000),
+            new Item("AK4", "Apple Watch", 299.999),
+            new Item("AK6", "Beats Headphones", 149.999),
+            new Item("AK9", "Bose Headphones", 149.999));
+
+    @Before
+    public void setUp() {
+
+        itemReactiveRepository.deleteAll()
+                .thenMany(Flux.fromIterable(itemList))
+                .flatMap(itemReactiveRepository::save)
+                .doOnNext((item -> {
+                    System.out.println("Inserted Item is :" + item);
+                }))
+                .blockLast();
+
+    }
+
 }
