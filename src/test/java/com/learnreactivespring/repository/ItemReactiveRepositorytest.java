@@ -44,5 +44,13 @@ public class ItemReactiveRepositorytest {
 
     }
 
+    @Test
+    public void getAllItems() {
+
+        StepVerifier.create(itemReactiveRepository.findAll())
+                .expectSubscription()
+                .expectNextCount(5)
+                .verifyComplete();
+    }
 
 }
